@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جداول المحاضرات - كلية التربية الرياضية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --bg-light: #f0f9ff;
+            --text-dark: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            background-image: 
+                linear-gradient(white, white), 
+                linear-gradient(135deg, #2563eb, #60a5fa);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 16px;
+            background: linear-gradient(45deg,
+                transparent 40%,
+                rgba(37, 99, 235, 0.2) 45%,
+                rgba(37, 99, 235, 0.3) 50%,
+                rgba(37, 99, 235, 0.2) 55%,
+                transparent 60%
+            );
+            z-index: -1;
+            background-size: 200% 200%;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        .section-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 15px;
+            padding: 2px;
+            background: linear-gradient(135deg, #eb2525, #60a5fa);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .section-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 10px 20px rgba(37, 99, 235, 0.2),
+                0 0 15px rgba(37, 99, 235, 0.1);
+        }
+
+        .section-card h2 {
+            position: relative;
+            padding-bottom: 15px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .section-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 30%;
+            right: 30%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                transparent,
+                #eb2525,
+                #60a5fa,
+                transparent
+            );
+        }
+
+        .view-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white !important;
+            text-decoration: none !important;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 99;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .developer-footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dev-content {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .dev-icon {
+            font-size: 24px;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        .dev-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .dev-text {
+            color: var(--text-dark);
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #eb2525, #7f60fa);
+            -webkit-background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+
+        .telegram-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0088cc;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: rgba(0,136,204,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .telegram-link:hover {
+            background: rgba(0,136,204,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,136,204,0.2);
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        @media (max-width: 768px) {
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>جداول محاضرات كلية التربية الرياضية</h1>
+        <h2>الفرقة الأولى</h2>
+        <h3>الفصل الدراسي الثاني 2024-2025</h3>
+    </div>
+
+    <div class="sections-grid">
+        <div class="section-card">
+            <h2>شعبة 1 و 2</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section1-2.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 3 و 4</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section3-4.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 5 و 6</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section5-6.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 7 و 8</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section7-8.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 9 و 10</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section9-10.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 11 و 12</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section11-12.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 13 و 14</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section13-14.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 15 و 16</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section15-16.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 17 و 18</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section17-18.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+
+        <div class="section-card">
+            <h2>شعبة 19 و 20</h2>
+            <p>الفرقة الأولى - الفصل الدراسي الثاني</p>
+            <a href="schedules/section19-20.html" target="_blank" class="view-btn">عرض الجدول</a>
+        </div>
+    </div>
+
+    <div class="back-to-top">
+        <a href="#" class="back-btn">
+            <i class="fas fa-arrow-up"></i>
+        </a>
+    </div>
+
+    <div class="developer-footer">
+        <div class="dev-content">
+            <span class="dev-icon">👨‍💻</span>
+            <div class="dev-info">
+                <p class="dev-text">Development of Captain Al-Ghazali</p>
+                <a href="https://t.me/G_3_E" class="telegram-link" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    G_3_E@
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

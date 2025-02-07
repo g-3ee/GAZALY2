@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول محاضرات شعبة 7و8</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .timetable {
+            margin: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            direction: rtl;
+        }
+
+        th, td {
+            border: 1px solid #eee;
+            padding: 15px;
+            text-align: right;
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+        }
+
+        .day {
+            background: #f8fafc;
+            font-weight: bold;
+        }
+
+        .lecture-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .subject {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .staff {
+            font-size: 0.9em;
+            color: #64748b;
+        }
+
+        .location {
+            color: #0f172a;
+            font-size: 0.9em;
+        }
+        /* أضف هذه الستايلات داخل وسم style */
+
+/* تأثير حركي عند المرور على الصفوف */
+tr:hover {
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+}
+
+/* تأثير حركي للخلايا */
+td {
+    transition: all 0.3s ease;
+}
+
+td:hover {
+    background-color: #e8f2ff;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.1);
+}
+
+/* تأثير نبض للمحاضرات */
+.lecture-info {
+    border-radius: 8px;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+.lecture-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+/* تأثير تدريجي للألوان */
+.subject {
+    background: linear-gradient(45deg, #2563eb, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 4px 0;
+}
+
+/* تأثير حركي لرأس الجدول */
+th {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, #2563eb, #3b82f6);
+}
+
+th:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    to {
+        left: 100%;
+    }
+}
+
+/* تحسين شكل الجدول */
+.timetable {
+    background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.timetable:hover {
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+}
+
+/* تأثير للأيام */
+.day {
+    font-weight: bold;
+    background: linear-gradient(45deg, #f8fafc, #f1f5f9);
+    border-right: 4px solid #2563eb;
+}
+/* تأثيرات إضافية للجدول */
+
+/* تأثير خلفية متحركة للجدول */
+.timetable {
+    background: linear-gradient(120deg, #ffffff, #f0f9ff, #ffffff);
+    background-size: 200% 200%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+}
+
+/* تأثير نبض للمحاضرات النشطة */
+.lecture-info {
+    position: relative;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1) }
+    50% { transform: scale(1.02) }
+    100% { transform: scale(1) }
+}
+
+/* تأثير حركي للموقع */
+.location {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.location:before {
+    content: '📍';
+    transform: translateY(-2px);
+    opacity: 0;
+    transition: 0.3s ease;
+}
+
+.lecture-info:hover .location:before {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* تأثير تمييز للوقت الحالي */
+.current-time {
+    position: relative;
+    overflow: hidden;
+}
+
+.current-time:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #2563eb;
+    animation: heightGrow 1s ease;
+}
+
+@keyframes heightGrow {
+    from { height: 0 }
+    to { height: 100% }
+}
+
+/* تأثير عند تحميل الجدول */
+tbody tr {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1 }
+}
+
+tbody tr:nth-child(1) { animation-delay: 0.1s }
+tbody tr:nth-child(2) { animation-delay: 0.2s }
+tbody tr:nth-child(3) { animation-delay: 0.3s }
+tbody tr:nth-child(4) { animation-delay: 0.4s }
+tbody tr:nth-child(5) { animation-delay: 0.5s }
+
+/* تأثير تمييز للمحاضرات المتزامنة */
+.concurrent {
+    border: 2px solid transparent;
+    background-image: linear-gradient(white, white), 
+                      linear-gradient(60deg, #2563eb, #60a5fa);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+.schedule-title {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.schedule-title h1 {
+    color: #2563eb;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #2563eb, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.schedule-title h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #2563eb, transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) }
+    100% { transform: translateX(100%) }
+}
+
+    </style>
+</head>
+<body>
+    <div class="schedule-title">
+        <h1>محتوى الأسبوع لشعبتي 7 و 8</h1>
+    </div>
+    
+    <div class="timetable">
+        <table>
+            <thead>
+                <tr>
+                    <th>اليوم</th>
+                    <th>10:00-8:00</th>
+                    <th>12:00-10:00</th>
+                    <th>2:00-12:00</th>
+                    <th>4:00-2:00</th>
+                    <th>6:00-4:00</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="day">الأحد</td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات السباحة (ع)</div>
+                            <div class="staff">، <DIv>م\ابوالحسن ربيع</DIv></div>
+                        
+                            <div class="location">نادي اعضاء هيئة التدريس</div>
+                        </div>
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات المضرب (ع)</div>
+                            <div class="staff">، <DIv>م\مصطفي بدوي</DIv></div>
+                        
+                            <div class="location">صالة 2</div>
+                        </div> 
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">مبادئ التدريس</div>
+                            <div class="staff">د\محمد معروف</div>
+                            <div class="location">مدرج 3</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="day">الاثنين</td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات كرة الطائرة (ع)</div>
+                            <div class="staff">م\محمود قريني</div>
+                            <div class="location">ملعب 2</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات السباحة  (ع)</div>
+                            <div class="staff">م\ابوالحسن ربيع</div>
+                            <div class="location"> نادي اعضاء هيئة التدريس</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات المصارعه (ع)</div>
+                            <div class="staff">م\احمد فايز</div>
+                            <div class="location">صالة 2</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات المضرب (ع)</div>
+                            <div class="staff">ممصطفي بدوي</div>
+                            <div class="location">صالة 2</div>
+                        </div>
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="day">الثلاثاء</td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات المصارعه (ع)</div>
+                            <div class="staff">م\احمد فايز</div>
+                            <div class="location">صالة 2</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">أساسيات كرة الطائره (ع)</div>
+                            <div class="staff">م\مازن منتصر</div>
+                            <div class="location">ملعب 2</div>
+                        </div> 
+                    </td>
+                    <td>
+                       
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject"> الاحصاء التطبيقي</div>
+                            <div class="staff">د\احمد رشاد</div>
+                            <div class="location">مدرج 1</div>
+                            <div class="location">من 5-6</div>
+                        </div>
+                        <div class="lecture-info">
+                            <div class="subject">مبادئ علم الحركه</div>
+                            <div class="staff">د\رحاب رشيدي</div>
+                            <div class="location">مدرج 1</div>
+                            <div class="location">من 6-7</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="day">الأربعاء</td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">حقوق الانسان</div>
+                            <div class="staff">د\اشرف موسي</div>
+                            <div class="location">مدرج 3</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="day">الخميس</td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject"> مدخل علم النفس الرياضي</div>
+                            <div class="staff">د\احمد رشاد</div>
+                            <div class="location">مدرج 2</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lecture-info">
+                            <div class="subject">فسيولوجيات الانيان</div>
+                            <div class="staff">د\رحاب حمدان</div>
+                            <div class="location">مدرج 2</div>
+                        </div> 
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td></td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+    <!-- أضف هذا قبل نهاية body -->
+<div class="visitor-counter">
+    <span>عدد المشاهدات:</span>
+    <span id="visitorCount">10</span>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+        // ضع بيانات Firebase الخاصة بك هنا
+        apiKey: "your-api-key",
+        authDomain: "your-auth-domain",
+        databaseURL: "your-database-url",
+        projectId: "your-project-id",
+        storageBucket: "your-storage-bucket",
+        messagingSenderId: "your-messaging-sender-id",
+        appId: "your-app-id"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // التحقق من الزيارة الجديدة
+    function checkNewVisitor() {
+        const visitorId = localStorage.getItem('visitorId');
+        if (!visitorId) {
+            const newVisitorId = Date.now().toString();
+            localStorage.setItem('visitorId', newVisitorId);
+            incrementVisitorCount();
+        }
+        updateVisitorCount();
+    }
+
+    function incrementVisitorCount() {
+        const visitorRef = db.ref('visitors');
+        visitorRef.transaction(currentCount => {
+            return (currentCount || 10) + 1;
+        });
+    }
+
+    function updateVisitorCount() {
+        const visitorRef = db.ref('visitors');
+        visitorRef.on('value', snapshot => {
+            document.getElementById('visitorCount').textContent = snapshot.val() || 10;
+        });
+    }
+
+    checkNewVisitor();
+</script>
+
+<style>
+.visitor-counter {
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    background: linear-gradient(45deg, #2563eb, #3b82f6);
+    color: white;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    animation: fadeIn 1s ease;
+}
+
+.visitor-counter span {
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+#visitorCount {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+</style>
+
+</body>
+</html>
